@@ -1,117 +1,65 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:ihliv/base/app_routers.dart';
+import 'package:ihliv/base/custom_style.dart';
+import 'package:ihliv/core/enums/app_env.dart';
+import 'package:ihliv/services/app_services.dart';
+import 'package:ihliv/services/pkg_services.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(level: Level.debug);
-void main() {
+void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await AppServices.instance.run(AppEnv.test);
   runApp(const MyApp());
+  FlutterNativeSplash.remove();
+  if (Platform.isAndroid) {
+    // 以下两行 设置android状态栏为透明的沉浸。
+    // 写在组件渲染之后，是为了在渲染后进行set赋值,覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    final isFirstOpen = PkgServices.instance.firstOpen();
+    final isLogin = false;
+    // final isLogin = UserServices.instance.token?.isNotEmpty ?? false;
+    return GetMaterialApp(
+      // initialRoute: isFirstOpen ? AppPages.guide : (isLogin ? AppPages.root : AppPages.oauth),
+      initialRoute:  AppPages.guide,
+      getPages: AppPages.routers,
+      builder: EasyLoading.init(),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        splashColor: Theme.of(context).colorScheme.themeRed.withOpacity(0.1),
+        canvasColor: Colors.white,
+        // 页面整体背景色
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
+          titleTextStyle: Theme.of(context).textTheme.blackBold33(16),
+          foregroundColor: Theme.of(context).colorScheme.black33,
+          shadowColor: Colors.transparent,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.green,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

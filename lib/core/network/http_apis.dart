@@ -1,5 +1,5 @@
 class HttpApis {
-  static String getAppStrategy = '/config/getStrategy'; // 获取app策略
+  static String appInfo = '/live/app/info'; // 获取app策略
   static String getAppConfig = "/config/getAppConfig"; // 获取app配置
 
   static String oauth = "/security/oauth"; // 登录注册

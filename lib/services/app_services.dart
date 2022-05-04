@@ -7,6 +7,7 @@ import 'package:get/get_instance/src/lifecycle.dart';
 import 'package:ihliv/core/enums/app_env.dart';
 import 'package:ihliv/core/network/http_apis.dart';
 import 'package:ihliv/core/network/http_services.dart';
+import 'package:ihliv/services/hive_services.dart';
 import 'package:ihliv/services/pkg_services.dart';
 // import 'package:ihliv/cores/services/purchase_services.dart';
 // import 'package:ihliv/modules/root/models/app_config_model.dart';
@@ -73,9 +74,9 @@ class AppServices extends GetLifeCycle with WidgetsBindingObserver {
     // 初始化网络请求，配置主地址
     HttpUtils.init(baseUrl: env.baseUrl());
     // 构建包信息
-    // await PkgServices.instance.buildInfo();
-    // // 初始化db
-    // await HiveServices.instance.register();
+    await PkgServices.instance.buildInfo();
+    // 初始化db
+    await HiveServices.instance.register();
     // // 注册用户
     // await UserServices.instance.register();
     // // 注册Call服务
