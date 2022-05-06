@@ -10,6 +10,7 @@ import 'package:ihliv/base/custom_style.dart';
 import 'package:ihliv/core/enums/app_env.dart';
 import 'package:ihliv/services/app_services.dart';
 import 'package:ihliv/services/pkg_services.dart';
+import 'package:ihliv/services/user_services.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(level: Level.debug);
@@ -33,11 +34,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isFirstOpen = PkgServices.instance.firstOpen();
-    final isLogin = false;
-    // final isLogin = UserServices.instance.token?.isNotEmpty ?? false;
+    final isLogin = UserServices.instance.token?.isNotEmpty ?? false;
     return GetMaterialApp(
-      // initialRoute: isFirstOpen ? AppPages.guide : (isLogin ? AppPages.root : AppPages.oauth),
-      initialRoute:  AppPages.guide,
+      initialRoute: isFirstOpen ? AppPages.guide : (isLogin ? AppPages.root : AppPages.oauth),
       getPages: AppPages.routers,
       builder: EasyLoading.init(),
       theme: ThemeData(
