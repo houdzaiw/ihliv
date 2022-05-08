@@ -23,9 +23,6 @@ class OauthPage extends StatelessWidget {
     return GetBuilder<OauthController>(builder: (controller) {
       return Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/images/login_back.png'), fit: BoxFit.cover),
-          ),
           child: Column(
             children: [
               const Spacer(flex: 2),

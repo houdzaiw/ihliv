@@ -7,6 +7,7 @@ import 'package:get/get_instance/src/lifecycle.dart';
 import 'package:ihliv/core/enums/app_env.dart';
 import 'package:ihliv/core/network/http_apis.dart';
 import 'package:ihliv/core/network/http_services.dart';
+import 'package:ihliv/sections/main/models/app_config_model.dart';
 import 'package:ihliv/services/hive_services.dart';
 import 'package:ihliv/services/pkg_services.dart';
 // import 'package:ihliv/cores/services/purchase_services.dart';
@@ -30,7 +31,7 @@ class AppServices extends GetLifeCycle with WidgetsBindingObserver {
 
   // app配置信息
   // final appStrategySub = BehaviorSubject<AppStrategyModel>();
-  // final appConfigSub = BehaviorSubject<AppConfigModel>();
+  final appConfigSub = BehaviorSubject<AppConfigModel>();
 
   // 社区发布次数限制
   var storyPublishLimit = 5;
@@ -101,13 +102,13 @@ class AppServices extends GetLifeCycle with WidgetsBindingObserver {
   // }
 
   // 获取配置
-  // Future<AppConfigModel?> fetchAppConfig() async {
-  //   final res = await HttpUtils.get(HttpApis.getAppConfig, params: {"ver": int.parse(PkgServices.instance.packageInfo?.buildNumber ?? "0")});
-  //   if (res is String && res.isEmpty) return null;
-  //   final model = AppConfigModel.fromJson(json.decode(res));
-  //   appConfigSub.add(model);
-  //   return model;
-  // }
+  Future<AppConfigModel?> fetchAppConfig() async {
+    final res = await HttpUtils.get(HttpApis.appInfo, params: {});
+    if (res is String && res.isEmpty) return null;
+    final model = AppConfigModel.fromJson(json.decode(res));
+    appConfigSub.add(model);
+    return model;
+  }
 
   refreshStoryPublishLimit() async {
     storyPublishLimit = await HttpUtils.post(HttpApis.storyPublishLimit);

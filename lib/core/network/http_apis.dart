@@ -1,5 +1,5 @@
 class HttpApis {
-  static String appInfo = '/live/app/info'; // 获取app策略
+  static String getAppStrategy = '/config/getStrategy'; // 获取app策略
   static String getAppConfig = "/config/getAppConfig"; // 获取app配置
 
   static String oauth = "/security/oauth"; // 登录注册
@@ -58,4 +58,6 @@ class HttpApis {
   static String storyPublish = "/info-flow/publish";  // 发布信息流
   static String storyDelete = "/info-flow/delete";  // 发布信息流
 
+  // gogogogogo
+  static String appInfo = "/live/app/info"; //获取app配置
 }
