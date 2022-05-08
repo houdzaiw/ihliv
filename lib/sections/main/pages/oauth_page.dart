@@ -45,7 +45,7 @@ class OauthPage extends StatelessWidget {
   _buildLogoName() {
     return Column(
       children: [
-        Image.asset('assets/images/logo.png'),
+        Image.asset('assets/base/logo.png'),
         const SizedBox(height: 20),
         Text(
           PkgServices.instance.packageInfo?.appName ?? '',
@@ -75,8 +75,7 @@ class OauthPage extends StatelessWidget {
               borderShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               fullWidthButton: true,
               size: 48,
-              icon: Image.asset("assets/images/fast_login.png"),
-              color: Colors.white,
+              color: Colors.black,
               onPressed: () => controller.oauth(OauthType.guest),
               text: "Fast Login",
               textStyle: Theme.of(context).textTheme.loginButton,

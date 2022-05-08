@@ -34,9 +34,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isFirstOpen = PkgServices.instance.firstOpen();
-    final isLogin = UserServices.instance.token?.isNotEmpty ?? false;
+    final isLogin = true;
+    // final isLogin = UserServices.instance.token?.isNotEmpty ?? false;
     return GetMaterialApp(
-      initialRoute: isFirstOpen ? AppPages.guide : (isLogin ? AppPages.root : AppPages.oauth),
+      // initialRoute: isFirstOpen ? AppPages.guide : (isLogin ? AppPages.root : AppPages.oauth),
+      initialRoute: AppPages.oauth,
       getPages: AppPages.routers,
       builder: EasyLoading.init(),
       theme: ThemeData(

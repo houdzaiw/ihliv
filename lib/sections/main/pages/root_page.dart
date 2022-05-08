@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:ihliv/sections/main/controllers/root_controller.dart';
 import 'package:ihliv/sections/main/widgets/bottom_bar_item.dart';
 import 'package:ihliv/sections/main/widgets/empty_widget.dart';
-import 'package:ihliv/services/app_services.dart';
 
 class RootPage extends StatelessWidget {
   final controller = Get.put(RootController());
